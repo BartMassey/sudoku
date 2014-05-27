@@ -87,7 +87,7 @@ def print_solution(soln):
         print()
 
 def color_puzzle():
-    global ncolored, colors, fixed
+    global ncolored, colors
     if ncolored >= 81:
         return [colors*1]
     def neighbor_colors(v):
@@ -100,7 +100,7 @@ def color_puzzle():
         ncs = -1
         target = -1
         for v in range(len(colors)):
-            if fixed[v]:
+            if colors[v] > 0:
                 continue
             ncsv = len(neighbor_colors(v))
             if ncsv > ncs:
@@ -114,13 +114,11 @@ def color_puzzle():
         return []
     ncolored += 1
     solns = []
-    fixed[v] = True
     for c in cs:
         colors[v] = c
         solns_cur = color_puzzle()
         solns += solns_cur
     colors[v] = 0
-    fixed[v] = False
     ncolored -= 1
     return solns
 
