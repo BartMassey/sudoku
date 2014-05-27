@@ -9,6 +9,7 @@
 
 # Graph format is list of edge 2-tuples with lower vertex first.
 
+from random import shuffle
 from sys import stdin, setrecursionlimit
 
 setrecursionlimit(82)
@@ -86,7 +87,7 @@ def print_solution(soln):
                 print(v, end="")
         print()
 
-def color_puzzle():
+def color_puzzle(shuffle_colors):
     global ncolored, colors
     if ncolored >= 81:
         return [colors*1]
@@ -110,19 +111,22 @@ def color_puzzle():
         return target
     v = most_constrained_free()
     cs = set(range(1,10)).difference(neighbor_colors(v))
+    if shuffle_colors:
+        cs = list(cs)
+        shuffle(cs)
     if len(cs) == 0:
         return []
     ncolored += 1
     solns = []
     for c in cs:
         colors[v] = c
-        solns_cur = color_puzzle()
+        solns_cur = color_puzzle(shuffle_colors)
         solns += solns_cur
     colors[v] = 0
     ncolored -= 1
     return solns
 
 read_puzzle()
-for soln in color_puzzle():
+for soln in color_puzzle(False):
     print_solution(soln)
     print()
