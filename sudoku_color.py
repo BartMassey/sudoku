@@ -76,10 +76,10 @@ def read_puzzle():
             colors[v] = int(l[c])
             ncolored += 1
 
-def print_solution():
+def print_solution(soln):
     for r in range(9):
         for c in range(9):
-            v = colors[index(r, c)]
+            v = soln[index(r, c)]
             if v == 0:
                 print(".", end="")
             else:
@@ -112,15 +112,23 @@ def color_puzzle():
     v = most_constrained_free()
     cs = set(range(1,10)).difference(neighbor_colors(v))
     if len(cs) == 0:
-        return
+        return []
+    if shuffle_colors:
+        cs = shuffle(list(cs))
     ncolored += 1
-    fixed[v] = True
+    solns = []
     for c in cs:
         colors[v] = c
-        color_puzzle()
+        solns_cur = color_puzzle(max_solns, shuffle_colors)
+        solns += solns_cur
+        if max_solns != None:
+            max_solns -= len(solns_cur)
+            if max_solns <= 0:
+                break
     colors[v] = 0
-    fixed[v] = False
     ncolored -= 1
+    return solns
 
 read_puzzle()
-color_puzzle()
+for soln in color_puzzle(None, False):
+    print_solution(soln)
