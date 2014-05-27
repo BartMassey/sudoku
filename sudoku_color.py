@@ -89,8 +89,7 @@ def print_solution(soln):
 def color_puzzle():
     global ncolored, colors, fixed
     if ncolored >= 81:
-        print_solution()
-        return
+        return [colors*1]
     def neighbor_colors(v):
         ncs = set([])
         for v0 in constraints[v]:
@@ -113,22 +112,19 @@ def color_puzzle():
     cs = set(range(1,10)).difference(neighbor_colors(v))
     if len(cs) == 0:
         return []
-    if shuffle_colors:
-        cs = shuffle(list(cs))
     ncolored += 1
     solns = []
+    fixed[v] = True
     for c in cs:
         colors[v] = c
-        solns_cur = color_puzzle(max_solns, shuffle_colors)
+        solns_cur = color_puzzle()
         solns += solns_cur
-        if max_solns != None:
-            max_solns -= len(solns_cur)
-            if max_solns <= 0:
-                break
     colors[v] = 0
+    fixed[v] = False
     ncolored -= 1
     return solns
 
 read_puzzle()
-for soln in color_puzzle(None, False):
+for soln in color_puzzle():
     print_solution(soln)
+    print()
