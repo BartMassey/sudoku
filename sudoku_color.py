@@ -87,8 +87,10 @@ def print_solution(soln):
                 print(v, end="")
         print()
 
-def color_puzzle(shuffle_colors):
+def color_puzzle(max_solns, shuffle_colors):
     global ncolored, colors
+    if max_solns != None and max_solns <= 0:
+        return []
     if ncolored >= 81:
         return [colors*1]
     def neighbor_colors(v):
@@ -120,13 +122,17 @@ def color_puzzle(shuffle_colors):
     solns = []
     for c in cs:
         colors[v] = c
-        solns_cur = color_puzzle(shuffle_colors)
+        solns_cur = color_puzzle(max_solns, shuffle_colors)
         solns += solns_cur
+        if max_solns != None:
+            max_solns -= len(solns_cur)
+            if max_solns <= 0:
+                break
     colors[v] = 0
     ncolored -= 1
     return solns
 
 read_puzzle()
-for soln in color_puzzle(False):
+for soln in color_puzzle(None, False):
     print_solution(soln)
     print()
