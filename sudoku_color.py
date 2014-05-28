@@ -10,9 +10,7 @@
 # Graph format is list of edge 2-tuples with lower vertex first.
 
 from random import shuffle
-from sys import stdin, setrecursionlimit
-
-setrecursionlimit(82)
+from sys import stdin
 
 def index(r, c):
     return 9 * r + c
@@ -132,7 +130,3 @@ def color_puzzle(max_solns, shuffle_colors):
     ncolored -= 1
     return solns
 
-read_puzzle()
-for soln in color_puzzle(None, False):
-    print_solution(soln)
-    print()
