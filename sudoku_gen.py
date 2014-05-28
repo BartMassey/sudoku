@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # Copyright © 2014 Bart Massey
+# [This program is licensed under the "MIT License"]
+# Please see the file COPYING in the source
+# distribution of this software for license terms.
 # Sudoku generator
 
 from sudoku_color import *

@@ -16,3 +16,6 @@ on an empty board with random choices, and then deletes
 squares in random order until it comes to a deletion that
 would make the solution ambiguous.
 
+This program is licensed under the "MIT License".  Please
+see the file COPYING in the source distribution of this
+software for license terms.
