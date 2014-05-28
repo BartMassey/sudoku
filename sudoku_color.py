@@ -65,6 +65,7 @@ constraints = adj_list(mk_sudoku_graph())
 colors = [0]*81
 fixed = [False]*81
 ncolored = 0
+debug = False
 
 def read_puzzle():
     global ncolored
@@ -89,7 +90,9 @@ def print_solution(soln):
         print()
 
 def color_puzzle(max_solns, shuffle_colors):
-    global ncolored, colors
+    global ncolored, colors, debug
+    if debug:
+        print("coloring %d" % (ncolored,))
     if max_solns != None and max_solns <= 0:
         return []
     if ncolored >= 81:
@@ -112,7 +115,15 @@ def color_puzzle(max_solns, shuffle_colors):
                 ncs = ncsv
         assert target != -1
         return target
-    v = most_constrained_free()
+    def first_free():
+        for v in range(len(colors)):
+            if colors[v] == 0:
+                return v
+        assert False
+    if max_solns == 1:
+        v = most_constrained_free()
+    else:
+        v = first_free()
     cs = set(range(1,10)).difference(neighbor_colors(v))
     if shuffle_colors:
         cs = list(cs)
@@ -122,8 +133,12 @@ def color_puzzle(max_solns, shuffle_colors):
     ncolored += 1
     solns = []
     for c in cs:
+        if debug:
+            print("coloring %d with %d (%d)" % (v, c, ncolored))
         colors[v] = c
         solns_cur = color_puzzle(max_solns, shuffle_colors)
+        if debug:
+            print("found %d solutions" % (len(solns_cur),))
         solns += solns_cur
         if max_solns != None:
             max_solns -= len(solns_cur)
